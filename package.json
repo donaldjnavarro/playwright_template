@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "A basic version of Playwright automated testing to jumpstart new projects",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "report": "npx playwright show-report",
+    "lint": "npx eslint \"./**/*.{js,mjs,cjs,ts,tsx}\" --config ./eslint.config.mjs "
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/donaldjnavarro/playwright_template.git"
@@ -17,7 +21,15 @@
   },
   "homepage": "https://github.com/donaldjnavarro/playwright_template#readme",
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.4"
+    "@types/node": "^22.13.4",
+    "eslint": "^9.20.1",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^15.15.0",
+    "typescript-eslint": "^8.24.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
   }
 }
