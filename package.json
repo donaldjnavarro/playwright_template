@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "A basic version of Playwright automated testing to jumpstart new projects",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "report": "npx playwright show-report"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/donaldjnavarro/playwright_template.git"
