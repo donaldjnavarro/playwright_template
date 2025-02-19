@@ -1,0 +1,23 @@
+{
+  "name": "playwright_template",
+  "version": "1.0.0",
+  "description": "A basic version of Playwright automated testing to jumpstart new projects",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donaldjnavarro/playwright_template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/donaldjnavarro/playwright_template/issues"
+  },
+  "homepage": "https://github.com/donaldjnavarro/playwright_template#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.4"
+  }
+}
