@@ -41,12 +41,16 @@ export default defineConfig({
     }
   },
 
-  /* Configure projects for major browsers */
+  /**
+   * Configure projects for major browsers
+   * - Browser coverage is defined in the .env file
+   * - Desktop Chrome will be included by default
+   **/
   projects: [
-    ... process.env.DESKTOP_CHROME?.toLowerCase() == 'true' ? [{
+    ... process.env.DESKTOP_CHROME?.toLowerCase() == 'false' ? [] : [{
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    }] : [],
+    }],
 
     ... process.env.DESKTOP_FIREFOX?.toLowerCase() == 'true' ? [{
       name: 'firefox',
