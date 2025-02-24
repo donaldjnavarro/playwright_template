@@ -4,23 +4,23 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import { config } from 'dotenv';
+import process from 'process';
+config({ path: './.env' })
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Default to not running in parallel, unless the .env file specifies */
+  fullyParallel: (process.env.PARALLEL?.toLowerCase() === 'true') || false,
+  // If running parallel, undefined workers will use a number of workers based on system resources
+  workers: (process.env.PARALLEL?.toLowerCase() === 'true') ? undefined : 1,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -30,44 +30,56 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    /** Determine if we will run in a headless browser. Defaults to headless */
+    headless: (process.env.HEADLESS?.toLowerCase() !== 'false') || true,
+
+    /** Browser dimensions */
+    viewport: {
+        width: (parseInt(process.env.WIDTH || '1280')),
+        height: (parseInt(process.env.HEIGHT || '720'))
+    }
   },
 
   /* Configure projects for major browsers */
   projects: [
-    {
+    ... process.env.DESKTOP_CHROME?.toLowerCase() == 'true' ? [{
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
+    }] : [],
 
-    {
+    ... process.env.DESKTOP_FIREFOX?.toLowerCase() == 'true' ? [{
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-    },
+    }] : [],
 
-    {
+    ... process.env.DESKTOP_SAFARI?.toLowerCase() == 'true' ? [{
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    }] : [],
 
     /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    ... process.env.DESKTOP_EDGE?.toLowerCase() == 'true' ? [{
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    }] : [],
+
+    ... process.env.DESKTOP_CHROME_BETA?.toLowerCase() == 'true' ? [{
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    }] : [],
+
+    /* Test against mobile viewports. */
+    ... process.env.MOBILE_CHROME?.toLowerCase() == 'true' ? [{
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    }] : [],
+
+    ... process.env.MOBILE_SAFARI?.toLowerCase() == 'true' ? [{
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    }] : []
+
   ],
 
   /* Run your local dev server before starting the tests */
