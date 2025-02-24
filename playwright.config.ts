@@ -43,40 +43,43 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
+    ... process.env.DESKTOP_CHROME?.toLowerCase() == 'true' ? [{
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
+    }] : [],
 
-    {
+    ... process.env.DESKTOP_FIREFOX?.toLowerCase() == 'true' ? [{
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-    },
+    }] : [],
 
-    {
+    ... process.env.DESKTOP_SAFARI?.toLowerCase() == 'true' ? [{
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    }] : [],
 
     /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    ... process.env.DESKTOP_EDGE?.toLowerCase() == 'true' ? [{
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    }] : [],
+
+    ... process.env.DESKTOP_CHROME_BETA?.toLowerCase() == 'true' ? [{
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    }] : [],
+
+    /* Test against mobile viewports. */
+    ... process.env.MOBILE_CHROME?.toLowerCase() == 'true' ? [{
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    }] : [],
+
+    ... process.env.MOBILE_SAFARI?.toLowerCase() == 'true' ? [{
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    }] : []
+
   ],
 
   /* Run your local dev server before starting the tests */
