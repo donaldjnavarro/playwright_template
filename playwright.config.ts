@@ -13,14 +13,14 @@ config({ path: './.env' })
  */
 export default defineConfig({
   testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Default to not running in parallel, unless the .env file specifies */
+  fullyParallel: (process.env.PARALLEL?.toLowerCase() === 'true') || false,
+  // If running parallel, undefined workers will use a number of workers based on system resources
+  workers: (process.env.PARALLEL?.toLowerCase() === 'true') ? undefined : 1,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -32,7 +32,13 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     /** Determine if we will run in a headless browser. Defaults to headless */
-    headless: (process.env.HEADLESS?.toLowerCase() !== 'false'),
+    headless: (process.env.HEADLESS?.toLowerCase() === 'true') || false,
+
+    /** Browser dimensions */
+    viewport: {
+        width: (parseInt(process.env.WIDTH || '1280')),
+        height: (parseInt(process.env.HEIGHT || '720'))
+    }
   },
 
   /* Configure projects for major browsers */

@@ -38,3 +38,7 @@ Visual Studio Code debugging is already supported. See the **.vscode/launch.json
 If a test is given a tag `{ tag: '@nameOfTag' }` then we can run only the tests with a given tag.
 
 Command syntax: `npx playwright test --grep '@nameOfTag'`
+
+### Running tests in parallel
+
+The .env file provides an option `PARALLEL=` that can be set to true in order to have tests run in parallel. Note that this should be used with care, considering whether a given product and set of tests can overlap without interfering with each other within the app they are testing.
