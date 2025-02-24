@@ -17,6 +17,21 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: 'Create env file'
+      run: |
+        touch .env
+        echo HEADLESS=true >> .env
+        echo PARALLEL=false >> .env
+        echo WIDTH=1280 >> .env
+        echo HEIGHT=720 >> .env
+        echo DESKTOP_CHROME=true >> .env
+        echo DESKTOP_CHROME_BETA=true >> .env
+        echo DESKTOP_FIREFOX=true >> .env
+        echo DESKTOP_EDGE=true >> .env
+        echo DESKTOP_SAFARI=true >> .env
+        echo MOBILE_CHROME=true >> .env
+        echo MOBILE_SAFARI=true >> .env
+        cat .env
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
