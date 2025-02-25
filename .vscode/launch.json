@@ -15,7 +15,9 @@
             "runtimeExecutable": "npx",
             "runtimeArgs": [
                 "playwright",
-                "test"
+                "test",
+                "--grep",
+                "@debug"
             ]
         }
     ]
