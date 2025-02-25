@@ -32,7 +32,7 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     /** Determine if we will run in a headless browser. Defaults to headless */
-    headless: (process.env.HEADLESS?.toLowerCase() !== 'false') || true,
+    headless: (process.env.HEADLESS?.toLowerCase() !== 'false'),
 
     /** Browser dimensions */
     viewport: {
