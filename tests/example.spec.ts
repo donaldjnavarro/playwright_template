@@ -1,6 +1,6 @@
 import { test, expect } from '../hooks.ts'
 
-test('has title', { tag: '@title' }, async ({ page }) => {
+test('Landing page has title', { tag: '@title' }, async ({ page }) => {
   
   await page.goto('https://playwright.dev/');
 
@@ -8,7 +8,7 @@ test('has title', { tag: '@title' }, async ({ page }) => {
   await expect(page).toHaveTitle(/Playwright/);
 });
 
-test('get started link', { tag: '@link' }, async ({ page }) => {
+test('Using the Get Started link', { tag: '@link' }, async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
   // Click the get started link.
@@ -17,3 +17,23 @@ test('get started link', { tag: '@link' }, async ({ page }) => {
   // Expects page to have a heading with the name of Installation.
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
 });
+
+test('Global header search field with invalid input', { tag: ['@header', '@search', '@validation']}, async ({ page }) => {
+  // Input string that has no search results
+  const invalidSearchText = 'qwertyuiop asdfghjkl zxcvbnm'
+
+  // Navigate to the page
+  await page.goto('https://playwright.dev/');
+
+  // Click the Search button
+  await page.locator('//button//*[text() = \'Search\']//ancestor::button')
+    .click()
+
+  // Input text into the Search field
+  await page.locator('//input[@placeholder = \'Search docs\']')
+    .fill(invalidSearchText)
+
+  // Verify the Search results
+  await expect(await page.locator('//*[text() = \'No results for\']'))
+    .toHaveText(`No results for "${invalidSearchText}"`)
+})
