@@ -10,7 +10,8 @@ A basic version of Playwright automated testing to jumpstart new projects
 
 ### Environmental Variables
 
-**.env** file is being used to store environmental variables through the **dotenv** package
+* **.env** file is being used to store environmental variables through the **dotenv** package
+* Some variables will need to be stored in Github Settings > Secrets in order for the Github Actions CI to succeed
 
 ## Setup
 
@@ -42,3 +43,16 @@ Command syntax: `npx playwright test --grep '@nameOfTag'`
 ### Running tests in parallel
 
 The .env file provides an option `PARALLEL=` that can be set to true in order to have tests run in parallel. Note that this should be used with care, considering whether a given product and set of tests can overlap without interfering with each other within the app they are testing.
+
+#### Viewing test results
+
+After a test is finished running, its results will be saved.
+
+* View the test results by using the command: `npx playwright show-report`
+
+#### Viewing details: Traces
+
+If you turn on Tracing, then after a test is run there will be a recording of the test saved. This recording includes the DOM and screenshots of the test at each step of its run.
+
+* There are multiple ways to turn tracing on. One example is when running the tests include `--trace on`
+* If Tracing was on during the test, then the test report will include a section with the trace
