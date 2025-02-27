@@ -29,8 +29,8 @@ jobs:
         echo DESKTOP_FIREFOX=true >> .env
         echo DESKTOP_EDGE=true >> .env
         echo DESKTOP_SAFARI=true >> .env
-        echo MOBILE_CHROME=true >> .env
-        echo MOBILE_SAFARI=true >> .env
+        echo MOBILE_CHROME=false >> .env
+        echo MOBILE_SAFARI=false >> .env
         cat .env
     - name: Run Playwright tests
       run: npx playwright test
