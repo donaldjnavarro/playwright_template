@@ -1,7 +1,7 @@
 import { test, expect } from '../hooks.ts';
 
 test('Landing page has title', { tag: '@title' }, async ({ page }) => {
-  
+
   await page.goto('https://playwright.dev/');
 
   // Expect a title "to contain" a substring.
