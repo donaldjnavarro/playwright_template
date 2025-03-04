@@ -418,20 +418,23 @@ async function createDefaultTodos(page: Page) {
   }
 }
 
-async function checkNumberOfTodosInLocalStorage(page: Page, expected: number) {
-  return await page.waitForFunction(e => {
-    return JSON.parse(localStorage['react-todos']).length === e;
+async function checkNumberOfTodosInLocalStorage(page: Page, expected: number, localStorage: Storage) {
+  return await page.waitForFunction((e: number) => {
+    return (JSON.parse(localStorage['react-todos'] as string) as { length: number }[]).length === e;
   }, expected);
 }
 
-async function checkNumberOfCompletedTodosInLocalStorage(page: Page, expected: number) {
+async function checkNumberOfCompletedTodosInLocalStorage(page: Page, expected: number, localStorage: Storage) {
   return await page.waitForFunction(e => {
-    return JSON.parse(localStorage['react-todos']).filter((todo: { completed: boolean }) => todo.completed).length === e;
+    const todos: { completed: boolean }[] = JSON.parse(localStorage.getItem('react-todos') || '[]') as { completed: boolean }[];
+    return todos.filter(todo => todo.completed).length === e;
   }, expected);
 }
 
-async function checkTodosInLocalStorage(page: Page, title: string) {
-  return await page.waitForFunction(t => {
-    return JSON.parse(localStorage['react-todos']).map((todo: { title: string }) => todo.title).includes(t);
+async function checkTodosInLocalStorage(page: Page, title: string, localStorage: Storage) {
+  return await page.waitForFunction((t: string) => {
+    const todos = localStorage.getItem('react-todos');
+    if (!todos) { return false; };
+    return (JSON.parse(todos) as { title: string }[]).map((todo) => todo.title).includes(t);
   }, title);
 }

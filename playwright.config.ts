@@ -1,11 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
 import { config } from 'dotenv';
-import process from 'process';
+import { env } from 'node:process';
 config({ path: './.env' });
 
 /**
@@ -14,15 +9,15 @@ config({ path: './.env' });
 export default defineConfig({
   testDir: './tests',
   /* Default to not running in parallel, unless the .env file specifies */
-  fullyParallel: (process.env.PARALLEL?.toLowerCase() === 'true') || false,
+  fullyParallel: (env.PARALLEL && env.PARALLEL.toLowerCase() === 'true') || false,
   // If running parallel, undefined workers will use a number of workers based on system resources
-  workers: (process.env.PARALLEL?.toLowerCase() === 'true') ? undefined : 1,
+  workers: (env.PARALLEL?.toLowerCase() === 'true') ? undefined : 1,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: !!env.CI,
   /* Retry on CI only */
-  retries: process.env.RETRY ? parseInt(process.env.RETRY) : 0,
+  retries: env.RETRY ? parseInt(env.RETRY) : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [ ['html', { open: 'never' }], [ process.env.REPORTER ? process.env.REPORTER : 'dot'] ],
+  reporter: [ ['html', { open: 'never' }], [ env.REPORTER ? env.REPORTER : 'dot'] ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -30,53 +25,53 @@ export default defineConfig({
 
     /* See https://playwright.dev/docs/trace-viewer */
     // Do not trace when using the Github reporter, otherwise default to only keep traces for failures.
-    trace: (process.env.REPORTER === 'github') ? 'off' : 'retain-on-failure',
+    trace: (env.REPORTER === 'github') ? 'off' : 'retain-on-failure',
 
     /** Determine if we will run in a headless browser. Defaults to headless */
-    headless: (process.env.HEADLESS?.toLowerCase() !== 'false'),
+    headless: (env.HEADLESS?.toLowerCase() !== 'false'),
 
     /** Browser dimensions */
     viewport: {
-        width: (parseInt(process.env.WIDTH || '1280')),
-        height: (parseInt(process.env.HEIGHT || '720'))
+      width: (parseInt(env.WIDTH || '1280')),
+      height: (parseInt(env.HEIGHT || '720'))
     }
   },
 
   /* Configure projects for major browsers */
   projects: [
-    ... process.env.DESKTOP_CHROME?.toLowerCase() == 'true' ? [{
+    ... env.DESKTOP_CHROME?.toLowerCase() == 'true' ? [{
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     }] : [],
 
-    ... process.env.DESKTOP_FIREFOX?.toLowerCase() == 'true' ? [{
+    ... env.DESKTOP_FIREFOX?.toLowerCase() == 'true' ? [{
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     }] : [],
 
-    ... process.env.DESKTOP_SAFARI?.toLowerCase() == 'true' ? [{
+    ... env.DESKTOP_SAFARI?.toLowerCase() == 'true' ? [{
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     }] : [],
 
     /* Test against branded browsers. */
-    ... process.env.DESKTOP_EDGE?.toLowerCase() == 'true' ? [{
+    ... env.DESKTOP_EDGE?.toLowerCase() == 'true' ? [{
       name: 'Microsoft Edge',
       use: { ...devices['Desktop Edge'], channel: 'msedge' },
     }] : [],
 
-    ... process.env.DESKTOP_CHROME_BETA?.toLowerCase() == 'true' ? [{
+    ... env.DESKTOP_CHROME_BETA?.toLowerCase() == 'true' ? [{
       name: 'Google Chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     }] : [],
 
     /* Test against mobile viewports. */
-    ... process.env.MOBILE_CHROME?.toLowerCase() == 'true' ? [{
+    ... env.MOBILE_CHROME?.toLowerCase() == 'true' ? [{
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'] },
     }] : [],
 
-    ... process.env.MOBILE_SAFARI?.toLowerCase() == 'true' ? [{
+    ... env.MOBILE_SAFARI?.toLowerCase() == 'true' ? [{
       name: 'Mobile Safari',
       use: { ...devices['iPhone 12'] },
     }] : []
@@ -87,6 +82,6 @@ export default defineConfig({
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
+  //   reuseExistingServer: !env.CI,
   // },
 });
