@@ -20,16 +20,17 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.RETRY ? parseInt(process.env.RETRY) : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [ ['html', { open: 'never' }], [ process.env.REPORTER ? process.env.REPORTER : 'dot'] ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* See https://playwright.dev/docs/trace-viewer */
+    // Do not trace when using the Github reporter, otherwise default to only keep traces for failures.
+    trace: (process.env.REPORTER === 'github') ? 'off' : 'retain-on-failure',
 
     /** Determine if we will run in a headless browser. Defaults to headless */
     headless: (process.env.HEADLESS?.toLowerCase() !== 'false'),

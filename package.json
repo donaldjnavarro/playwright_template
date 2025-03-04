@@ -4,7 +4,7 @@
   "description": "A basic version of Playwright automated testing to jumpstart new projects",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test --trace on",
+    "test": "npx playwright test",
     "report": "npx playwright show-report",
     "lint": "npx eslint \"./**/*.{js,mjs,cjs,ts,tsx}\" --config ./eslint.config.mjs "
   },

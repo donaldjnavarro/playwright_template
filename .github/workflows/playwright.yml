@@ -24,6 +24,8 @@ jobs:
         echo PARALLEL=false >> .env
         echo WIDTH=1280 >> .env
         echo HEIGHT=720 >> .env
+        echo RETRY=2 >> .env
+        echo REPORTER=github >> .env
         echo DESKTOP_CHROME=true >> .env
         echo DESKTOP_CHROME_BETA=true >> .env
         echo DESKTOP_FIREFOX=true >> .env
