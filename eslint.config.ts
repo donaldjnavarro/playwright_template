@@ -1,23 +1,28 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
-
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {files: [
     "**/*.{js,mjs,cjs,ts,jsx,tsx}"
   ]},
-  {languageOptions: { globals: globals.browser }},
-  pluginJs.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['*/*.{mjs,ts,json}', '*.{mjs,ts,json}']
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   {
     ignores: ["playwright-report/"],
   },
   {
     rules: {
       semi: 'warn',
-      "eol-last": 'error',
+      "eol-last": 'warn',
       "no-trailing-spaces": 'warn',
       "default-case": 'error',
       "default-case-last": 'warn',
@@ -29,9 +34,15 @@ export default [
       "capitalized-comments": ["warn", "always", { "ignoreConsecutiveComments": true }],
       "no-unneeded-ternary": 'warn',
       "no-unused-expressions": 'warn',
+      "no-unused-vars": 'warn',
+      "no-undef": 'error',
       "no-useless-catch": 'warn',
       "no-var": 'warn',
-      "prefer-const": 'warn'
+      "prefer-const": 'warn',
+      curly: 'warn',
+      indent: ['warn', 2, { ArrayExpression: 'first', SwitchCase: 1 }],
+      'no-multiple-empty-lines': ['warn', { max: 2 }],
+      'no-multi-spaces': ['warn', { ignoreEOLComments: true }],
     },
   },
   {
@@ -40,7 +51,5 @@ export default [
         version: "detect"
       }
     }
-  },
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  }
 ];

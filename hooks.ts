@@ -2,13 +2,12 @@ import { test as base } from "@playwright/test";
 
 export const test = base.extend<{ testHook: void }>({
   testHook: [
-    // eslint-disable-next-line no-empty-pattern
     async ({}, use) => {
-        // Any code here will be run as a before each hook
+      // Any code here will be run as a before each hook
 
-        await use();
+      await use();
 
-        // Put any code you want run automatically after each test here
+      // Put any code you want run automatically after each test here
     },
     { auto: true },
   ],

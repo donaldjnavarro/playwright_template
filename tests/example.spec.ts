@@ -34,6 +34,6 @@ test('Global header search field with invalid input', { tag: ['@header', '@searc
     .fill(invalidSearchText);
 
   // Verify the Search results
-  await expect(await page.locator('//*[text() = \'No results for\']'))
+  await expect(page.locator('//*[text() = \'No results for\']'))
     .toHaveText(`No results for "${invalidSearchText}"`);
 });
