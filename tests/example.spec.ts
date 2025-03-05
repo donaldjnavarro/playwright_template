@@ -1,39 +1,56 @@
 import { test, expect } from '../hooks.ts';
+import { PlaywrightDevPage } from './../page_object_models/playwright_dev_page';
+import { PlaywrightIntroPage } from './../page_object_models/playwright_intro_page.ts';
 
-test('Landing page has title', { tag: '@title' }, async ({ page }) => {
+test.describe('Playwright Home Page', { tag: ['@playwrightHomePage', '@debug'] }, () => {
 
-  await page.goto('https://playwright.dev/');
+  /** Background actions */
+  test.beforeEach(async ({ page }) => {
+    const devPage = new PlaywrightDevPage(page);
+    await page.goto(devPage.url);
+  });
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+  test('Landing page has title', { tag: '@title' }, async ({ page }) => {
+    const devPage = new PlaywrightDevPage(page);
+    await expect(page, 'Verifying web browser tab title')
+      .toHaveTitle(devPage.expected.title);
+  });
 
-test('Using the Get Started link', { tag: '@link' }, async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  test('Using the Get Started link', { tag: '@link' }, async ({ page }) => {
+    const devPage = new PlaywrightDevPage(page);
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+    // Click the get started link to navigate to the Intro page
+    await devPage.clickGetStarted();
+    const introPage = new PlaywrightIntroPage(page);
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+    // Expect the Intro page URL
+    await expect(page, 'Verifying the URL of the Intro page')
+      .toHaveURL(introPage.url);
 
-test('Global header search field with invalid input', { tag: ['@header', '@search', '@validation']}, async ({ page }) => {
-  // Input string that has no search results
-  const invalidSearchText = 'qwertyuiop asdfghjkl zxcvbnm';
+    // Expect the Intro page title to be present
+    await expect(page, 'Verifying web browser tab title')
+      .toHaveTitle(introPage.expected.title);
 
-  // Navigate to the page
-  await page.goto('https://playwright.dev/');
+    // Expect the Intro page to have a heading with the name of Installation.
+    await expect(page.getByRole('heading', { name: 'Installation' }), 'Verifying page contents for heading text')
+      .toBeVisible();
+  });
 
-  // Click the Search button
-  await page.locator('//button//*[text() = \'Search\']//ancestor::button')
-    .click();
+  test('Global header search field with invalid input', { tag: ['@header', '@search', '@validation']}, async ({ page }) => {
+    const devPage = new PlaywrightDevPage(page);
 
-  // Input text into the Search field
-  await page.locator('//input[@placeholder = \'Search docs\']')
-    .fill(invalidSearchText);
+    // Define string to input that has no search results
+    const invalidSearchText = 'qwertyuiop asdfghjkl zxcvbnm';
 
-  // Verify the Search results
-  await expect(page.locator('//*[text() = \'No results for\']'))
-    .toHaveText(`No results for "${invalidSearchText}"`);
+    // Click the Search button
+    await devPage.clickSearchButton();
+
+    // Input text into the Search field
+    await devPage.inputSearch(invalidSearchText);
+
+    // Verify the Search results
+    const actualText = await devPage.getSearchResultValidationMessage();
+    expect(actualText)
+      .toBe(`No results for "${invalidSearchText}"`);
+  });
 });
