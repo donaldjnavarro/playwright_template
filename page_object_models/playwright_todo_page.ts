@@ -28,4 +28,19 @@ export class PlaywrightTodoPage extends BasePage {
       throw new Error(`Error while inputting text (${todoText}) into Todo field: ${err}`);
     }
   }
+
+  async clickCheckBox (itemString: string) {
+    await this.page.locator(`//label[text() = '${itemString}']/preceding-sibling::input[@type = 'checkbox']`)
+      .click();
+  }
+
+  async isItemChecked (itemString: string) {
+    return (await this.page.locator(`//label[text() = '${itemString}']/preceding-sibling::input[@type = 'checkbox']`)
+      .isChecked());
+  }
+
+  async clickToggleAll () {
+    await this.page.locator('//input[@id = \'toggle-all\']')
+      .click();
+  }
 }

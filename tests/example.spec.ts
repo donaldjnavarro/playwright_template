@@ -111,3 +111,103 @@ test.describe('List functionality examples', { tag: ['@exampleTodos'] }, () => {
       .toBeEditable();
   });
 });
+
+test.describe('Checkbox functionality examples', { tag: ['@exampleCheckboxes']}, () => {
+
+  /** Background actions */
+  test.beforeEach(async ({ page }) => {
+    const todoPage = new PlaywrightTodoPage(page);
+    await page.goto(todoPage.url);
+  });
+
+  const TODO_ITEMS = [
+    'buy some cheese',
+    'feed the cat',
+    'book a doctors appointment'
+  ] as const;
+
+  test('Checkboxes can be toggled', { tag: ['@exampleCheckbox'] }, async ({ page }) => {
+    const todoPage = new PlaywrightTodoPage(page);
+
+    /** Input an item to the list */
+    await todoPage.inputTodo(TODO_ITEMS[0]);
+    await todoPage.inputTodo(TODO_ITEMS[1]);
+    await todoPage.inputTodo(TODO_ITEMS[2]);
+
+    /** Verify the list has the input item */
+    const currentList = await page.getByTestId('todo-title').allTextContents();
+    expect(currentList, 'Expect the list to have the input item')
+      .toEqual([
+        TODO_ITEMS[0],
+        TODO_ITEMS[1],
+        TODO_ITEMS[2]
+      ]);
+
+    /** Check the first checkbox */
+    await todoPage.clickCheckBox(TODO_ITEMS[0]);
+    expect(await todoPage.isItemChecked(TODO_ITEMS[0]))
+      .toBeTruthy();
+
+    /** Uncheck the first checkbox */
+    await todoPage.clickCheckBox(TODO_ITEMS[0]);
+    expect(await todoPage.isItemChecked(TODO_ITEMS[0]))
+      .toBeFalsy();
+
+    /** Check the second checkbox */
+    await todoPage.clickCheckBox(TODO_ITEMS[1]);
+    expect(await todoPage.isItemChecked(TODO_ITEMS[1]))
+      .toBeTruthy();
+
+    /** Uncheck the second checkbox */
+    await todoPage.clickCheckBox(TODO_ITEMS[1]);
+    expect(await todoPage.isItemChecked(TODO_ITEMS[1]))
+      .toBeFalsy();
+
+    /** Check the third checkbox */
+    await todoPage.clickCheckBox(TODO_ITEMS[2]);
+    expect(await todoPage.isItemChecked(TODO_ITEMS[2]))
+      .toBeTruthy();
+
+    /** Uncheck the third checkbox */
+    await todoPage.clickCheckBox(TODO_ITEMS[2]);
+    expect(await todoPage.isItemChecked(TODO_ITEMS[2]))
+      .toBeFalsy();
+
+  });
+
+  test('Toggle all button toggles all checkboxes', { tag: ['@exampleSelectAll', '@debug'] }, async ({ page }) => {
+    const todoPage = new PlaywrightTodoPage(page);
+
+    /** Input an item to the list */
+    await todoPage.inputTodo(TODO_ITEMS[0]);
+    await todoPage.inputTodo(TODO_ITEMS[1]);
+    await todoPage.inputTodo(TODO_ITEMS[2]);
+
+    /** Verify the list has the input item */
+    const currentList = await page.getByTestId('todo-title').allTextContents();
+    expect(currentList, 'Expect the list to have the input item')
+      .toEqual([
+        TODO_ITEMS[0],
+        TODO_ITEMS[1],
+        TODO_ITEMS[2]
+      ]);
+
+    /** Toggle all checkboxes ON */
+    await todoPage.clickToggleAll();
+    expect(await todoPage.isItemChecked(TODO_ITEMS[0]))
+      .toBeTruthy();
+    expect(await todoPage.isItemChecked(TODO_ITEMS[1]))
+      .toBeTruthy();
+    expect(await todoPage.isItemChecked(TODO_ITEMS[2]))
+      .toBeTruthy();
+
+    /** Toggle all checkboxes OFF */
+    await todoPage.clickToggleAll();
+    expect(await todoPage.isItemChecked(TODO_ITEMS[0]))
+      .toBeFalsy();
+    expect(await todoPage.isItemChecked(TODO_ITEMS[1]))
+      .toBeFalsy();
+    expect(await todoPage.isItemChecked(TODO_ITEMS[2]))
+      .toBeFalsy();
+  });
+});
