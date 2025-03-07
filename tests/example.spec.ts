@@ -3,7 +3,7 @@ import { PlaywrightDevPage } from './../page_object_models/playwright_dev_page';
 import { PlaywrightIntroPage } from './../page_object_models/playwright_intro_page.ts';
 import { PlaywrightTodoPage } from './../page_object_models/playwright_todo_page.ts';
 
-test.describe('Playwright Home Page', { tag: ['@playwrightHomePage'] }, () => {
+test.describe('Example homepage tests', { tag: ['@playwrightHomePage'] }, () => {
 
   /** Background actions */
   test.beforeEach(async ({ page }) => {
@@ -56,7 +56,7 @@ test.describe('Playwright Home Page', { tag: ['@playwrightHomePage'] }, () => {
   });
 });
 
-test.describe('List functionality examples', { tag: ['@exampleTodos'] }, () => {
+test.describe('Example list functionality tests', { tag: ['@exampleTodos'] }, () => {
 
   /** Background actions */
   test.beforeEach(async ({ page }) => {
@@ -112,7 +112,7 @@ test.describe('List functionality examples', { tag: ['@exampleTodos'] }, () => {
   });
 });
 
-test.describe('Checkbox functionality examples', { tag: ['@exampleCheckboxes']}, () => {
+test.describe('Example checkbox functionality tests', { tag: ['@exampleCheckboxes']}, () => {
 
   /** Background actions */
   test.beforeEach(async ({ page }) => {
@@ -175,7 +175,7 @@ test.describe('Checkbox functionality examples', { tag: ['@exampleCheckboxes']},
 
   });
 
-  test('Toggle all button toggles all checkboxes', { tag: ['@exampleSelectAll', '@debug'] }, async ({ page }) => {
+  test('Button toggles all checkboxes', { tag: ['@exampleSelectAll'] }, async ({ page }) => {
     const todoPage = new PlaywrightTodoPage(page);
 
     /** Input an item to the list */
