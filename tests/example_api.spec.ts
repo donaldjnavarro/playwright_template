@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
 
-test.describe('Example tests using API calls', { tag: ['@api', '@debug']}, () => {
+test.describe('Example tests using API calls', { tag: ['@api']}, () => {
 
   test('Example API GET request using API key', async ({ playwright }) => {
     // Define API request parameters
