@@ -8,20 +8,21 @@ config({ path: './.env' });
 test.describe('Example tests using API calls', { tag: ['@api', '@debug']}, () => {
 
   test('Example API GET request using API key', async ({ playwright }) => {
+    // Define API request parameters
     const host = 'https://api.openai.com/v1/';
+    const path = 'models';
     const apiKey = env.OPENAI_API_KEY;
     if (!apiKey) {
       throw new Error(`API Key needed for GET request is missing. Need authentication for ${host}`);
     }
 
+    // Create API context
     const apiContext = await playwright.request.newContext({
       baseURL: host,
       extraHTTPHeaders: {
         Authorization: `Bearer ${apiKey}`,
       },
     });
-
-    const path = 'models';
     const response: APIResponse = await apiContext.get(path);
 
     // Verify API response Status Code
@@ -45,6 +46,7 @@ test.describe('Example tests using API calls', { tag: ['@api', '@debug']}, () =>
 
   test('Example API GET request using Basic Auth', async ({ playwright }) => {
 
+    // Define API request parameters
     const host = 'https://postman-echo.com/';
     const path = 'basic-auth';
     const username = env.POSTMAN_API_USERNAME;
@@ -53,6 +55,7 @@ test.describe('Example tests using API calls', { tag: ['@api', '@debug']}, () =>
       throw new Error(`Auth needed for GET request is missing. Need authentication for ${host}`);
     }
 
+    // Create API context
     const api = await playwright.request.newContext({
       baseURL: host,
       httpCredentials: { username, password }
@@ -71,6 +74,9 @@ test.describe('Example tests using API calls', { tag: ['@api', '@debug']}, () =>
 
     expect(body.authenticated, 'Expect Postman response to include \'authenticated\' key')
       .toBe(true);
+
+    // Teardown
+    await api.dispose();
   });
 
 });
