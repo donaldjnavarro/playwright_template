@@ -7,7 +7,7 @@ config({ path: './.env' });
 
 test.describe('Example tests using API calls', { tag: ['@api']}, () => {
 
-  test('Example API GET request using API key', async ({ playwright }) => {
+  test('Example API GET request using API key', { tag: ['@ignore'] }, async ({ playwright }) => {
     // Define API request parameters
     const host = 'https://api.openai.com/v1/';
     const path = 'models';
@@ -44,7 +44,7 @@ test.describe('Example tests using API calls', { tag: ['@api']}, () => {
     await apiContext.dispose();
   });
 
-  test('Example API GET request using Basic Auth', async ({ playwright }) => {
+  test('Example API GET request using Basic Auth', { tag: ['@ignore'] }, async ({ playwright }) => {
 
     // Define API request parameters
     const host = 'https://postman-echo.com/';
