@@ -2,11 +2,6 @@ import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  {
-    globals: {
-      console: 'readonly',
-    },
-  },
   {files: [
     "**/*.{js,mjs,cjs,ts,jsx,tsx}"
   ]},
@@ -15,10 +10,11 @@ export default [
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*/*.{mjs,ts,json}', '*.{mjs,ts,json}'],
           maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 1000
         },
-        tsconfigRootDir: __dirname,
+      },
+      globals: {
+        console: 'readonly',
       },
     },
   },

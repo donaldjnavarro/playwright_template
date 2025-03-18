@@ -25,7 +25,7 @@ export class PlaywrightTodoPage extends BasePage {
       await newTodo.fill(todoText);
       await newTodo.press('Enter');
     } catch (err) {
-      throw new Error(`Error while inputting text (${todoText}) into Todo field: ${err}`);
+      throw new Error(`Error while inputting text (${todoText}) into Todo field: ${(err as Error).message}`);
     }
   }
 
