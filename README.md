@@ -24,6 +24,20 @@ A basic version of Playwright automated testing to jumpstart new projects.
 
 Common commands can be found in the **package.json** file's `scripts`
 
+### Browser Coverage
+
+#### Running tests on specific browsers
+
+Which browsers will be tested, can be configured in the **.env** file. These offer user-specific controls for the execution configurations found in **playwright.config.ts** that are outside of version control.
+
+#### Differentiating between mobile and desktop breakpoints
+
+In addition to turning on/off which mobile browsers will be tested, the mobile devices themselves that will be used can be configured in the **.env** file with `IOS_DEVICE` and `ANDROID_DEVICE`, but if no value is provided then a default value is used within the **playwright.config.ts** file.
+
+The approach being used in the example tests, is to have mobile-specific aspects of tests  handled by conditionals within the tests themselves using the `isMobile` flag to separate actions that are specific to mobile or desktop.
+
+**Alternate approach to mobile breakpoints:** Depending on the project, instead of the example approach, tests can be separated into mobile and desktop folders (or separated by filename) to group tests. If this approach is desired, then **playwright.config.ts** would need to be changed so that `Projects` objects for each browser use a syntax like `testMatch: /mobile\/.*\.spec\.ts/` or `testIgnore: /desktop\/.*\.spec\.ts/` to only have certain tests run against that browser.
+
 ### Headless Browsers
 
 By default tests will run in headless browsers, meaning the browser will not be rendered on your screen.

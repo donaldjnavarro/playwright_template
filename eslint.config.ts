@@ -2,6 +2,11 @@ import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  {
+    globals: {
+      console: 'readonly',
+    },
+  },
   {files: [
     "**/*.{js,mjs,cjs,ts,jsx,tsx}"
   ]},

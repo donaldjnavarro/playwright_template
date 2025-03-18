@@ -38,40 +38,40 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     ... env.DESKTOP_CHROME?.toLowerCase() == 'true' ? [{
-      name: 'chromium',
+      name: 'Desktop Chromium',
       use: { ...devices['Desktop Chrome'] },
     }] : [],
 
     ... env.DESKTOP_FIREFOX?.toLowerCase() == 'true' ? [{
-      name: 'firefox',
+      name: 'Desktop Firefox',
       use: { ...devices['Desktop Firefox'] },
     }] : [],
 
     ... env.DESKTOP_SAFARI?.toLowerCase() == 'true' ? [{
-      name: 'webkit',
+      name: 'Desktop Safari (webkit)',
       use: { ...devices['Desktop Safari'] },
     }] : [],
 
     /* Test against branded browsers. */
     ... env.DESKTOP_EDGE?.toLowerCase() == 'true' ? [{
-      name: 'Microsoft Edge',
+      name: 'Desktop Microsoft Edge',
       use: { ...devices['Desktop Edge'], channel: 'msedge' },
     }] : [],
 
     ... env.DESKTOP_CHROME_BETA?.toLowerCase() == 'true' ? [{
-      name: 'Google Chrome',
+      name: 'Desktop Google Chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     }] : [],
 
     /* Test against mobile viewports. */
     ... env.MOBILE_CHROME?.toLowerCase() == 'true' ? [{
       name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
+      use: { ...devices[env.ANDROID_DEVICE || 'Pixel 5'] },
     }] : [],
 
     ... env.MOBILE_SAFARI?.toLowerCase() == 'true' ? [{
       name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
+      use: { ...devices[env.IOS_DEVICE || 'iPhone 12'] },
     }] : []
 
   ],
