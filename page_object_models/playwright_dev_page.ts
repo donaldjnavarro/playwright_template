@@ -23,7 +23,7 @@ export class PlaywrightDevPage extends BasePage {
       await this.page.locator('//button//*[text() = \'Search\']//ancestor::button')
         .click();
     } catch (err) {
-      throw new Error(`Error while clicking the Search button: ${err}`);
+      throw new Error(`Error while clicking the Search button: ${(err as Error).message}`);
     }
   }
 
@@ -34,7 +34,7 @@ export class PlaywrightDevPage extends BasePage {
     try {
       await this.page.getByRole('link', { name: 'Get started' }).click();
     } catch (err) {
-      throw new Error(`Error while clicking the Get Started button: ${err}`);
+      throw new Error(`Error while clicking the Get Started button: ${(err as Error).message}`);
     }
   }
 
@@ -46,7 +46,7 @@ export class PlaywrightDevPage extends BasePage {
       await this.page.locator('//input[@placeholder = \'Search docs\']')
         .fill(searchText);
     } catch (err) {
-      throw new Error(`Error while inputting text into the Search field: ${err}`);
+      throw new Error(`Error while inputting text into the Search field: ${(err as Error).message}`);
     }
   }
 
@@ -54,12 +54,12 @@ export class PlaywrightDevPage extends BasePage {
    * Get the validation message when no search results are found
    * @returns {string} the validation message
    */
-  async getSearchResultValidationMessage () {
+  async getSearchResultValidationMessage (): Promise<string | null> {
     try {
       return await this.page.locator('//*[text() = \'No results for\']')
         .textContent();
     } catch (err) {
-      throw new Error(`Error while getting the validation message from the search results: ${err}`);
+      throw new Error(`Error while getting the validation message from the search results: ${(err as Error).message}`);
     }
   }
 }

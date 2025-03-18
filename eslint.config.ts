@@ -10,10 +10,11 @@ export default [
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*/*.{mjs,ts,json}', '*.{mjs,ts,json}'],
           maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 1000
         },
-        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: {
+        console: 'readonly',
       },
     },
   },
