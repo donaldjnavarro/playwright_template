@@ -1,6 +1,8 @@
 # Playwright Automation Template
 
-A basic version of Playwright automated testing to jumpstart new projects
+A basic version of Playwright automated testing to jumpstart new projects.
+
+[toc]
 
 ## Framework
 
