@@ -40,46 +40,53 @@ export default defineConfig({
     ... env.DESKTOP_CHROME?.toLowerCase() === 'true' ? [{
       name: 'Desktop Chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: /mobile\/.*\.spec\.ts/
+      testIgnore: [/mobile\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
     }] : [],
 
     ... env.DESKTOP_FIREFOX?.toLowerCase() === 'true' ? [{
       name: 'Desktop Firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: /mobile\/.*\.spec\.ts/
+      testIgnore: [/mobile\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
     }] : [],
 
     ... env.DESKTOP_SAFARI?.toLowerCase() === 'true' ? [{
       name: 'Desktop Safari (webkit)',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: /mobile\/.*\.spec\.ts/
+      testIgnore: [/mobile\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
     }] : [],
 
     /* Test against branded browsers. */
     ... env.DESKTOP_EDGE?.toLowerCase() === 'true' ? [{
       name: 'Desktop Microsoft Edge',
       use: { ...devices['Desktop Edge'], channel: 'msedge' },
-      testIgnore: /mobile\/.*\.spec\.ts/
+      testIgnore: [/mobile\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
     }] : [],
 
     ... env.DESKTOP_CHROME_BETA?.toLowerCase() === 'true' ? [{
       name: 'Desktop Google Chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-      testIgnore: /mobile\/.*\.spec\.ts/
+      testIgnore: [/mobile\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
     }] : [],
 
     /* Test against mobile viewports. */
     ... env.MOBILE_CHROME?.toLowerCase() === 'true' ? [{
       name: 'Mobile Chrome',
       use: { ...devices[env.ANDROID_DEVICE || 'Pixel 5'] },
-      testIgnore: /desktop\/.*\.spec\.ts/
+      testIgnore: [/desktop\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
     }] : [],
 
     ... env.MOBILE_SAFARI?.toLowerCase() === 'true' ? [{
       name: 'Mobile Safari',
       use: { ...devices[env.IOS_DEVICE || 'iPhone 12'] },
-      testIgnore: /desktop\/.*\.spec\.ts/
-    }] : []
+      testIgnore: [/desktop\/.*\.spec\.ts/, /api\/.*\.spec\.ts/]
+    }] : [],
+
+    /* Test API exclusive tests. These will run without opening a browser. */
+    ... [{
+      name: 'API',
+      use: { },
+      testMatch: /api\/.*\.spec\.ts/
+    }]
 
   ],
 

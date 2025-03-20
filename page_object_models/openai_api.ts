@@ -1,6 +1,5 @@
 import { BaseApi } from './base_api';
-import * as playwright from 'playwright';
-import { APIResponse } from "@playwright/test";
+import { request, APIResponse } from "@playwright/test";
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
@@ -27,7 +26,7 @@ export class OpenAIApi extends BaseApi {
    */
   async getModels(): Promise<{ data: Array<string> }> {
     // Create API context
-    const apiContext = await playwright.request.newContext(this.options);
+    const apiContext = await request.newContext(this.options);
     // Send GET request
     const response: APIResponse = await apiContext.get('models');
     // Verify response status
