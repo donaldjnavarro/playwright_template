@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx playwright test",
     "report": "npx playwright show-report",
-    "lint": "npx eslint \"./**/*.{js,mjs,cjs,ts,tsx}\" --config ./eslint.config.mjs "
+    "lint": "npx eslint \"./**/*.{js,mjs,cjs,ts,tsx}\" --config ./eslint.config.ts"
   },
   "repository": {
     "type": "git",
