@@ -1,14 +1,14 @@
-import { test, expect } from '../hooks.ts';
-import { OpenAIApi } from '../page_object_models/openai_api.ts';
-import { PostmanApi } from '../page_object_models/postman_api.ts';
+import { test, expect } from '../../hooks.ts';
+import { OpenAIApi } from '../../page_object_models/openai_api.ts';
+import { PostmanApi } from '../../page_object_models/postman_api.ts';
 import { Serializable } from "playwright-core/types/structs";
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
 
-test.describe('Example tests using API calls', { tag: ['@api']}, () => {
+test.describe('Example tests using API calls', { tag: ['@apiExamples']}, () => {
 
-  test('Example API GET request using API key', async () => {
+  test('Example API GET request using API key', { tag: ['@apiOpenAIGet'] }, async () => {
     test.skip(env.CI?.toLowerCase() === 'true', 'Skip this test in CICD pipeline for lack of required secrets');
 
     const openAIApi = new OpenAIApi();
@@ -25,7 +25,7 @@ test.describe('Example tests using API calls', { tag: ['@api']}, () => {
 
   });
 
-  test('Example API GET request using Basic Auth', async () => {
+  test('Example API GET request using Basic Auth', { tag: ['@apiPostmanGet'] }, async () => {
     test.skip(env.CI?.toLowerCase() === 'true', 'Skip this test in CICD pipeline for lack of required secrets');
 
     const postmanApi = new PostmanApi();
@@ -40,7 +40,7 @@ test.describe('Example tests using API calls', { tag: ['@api']}, () => {
       .toBe(true);
   });
 
-  test('Example API POST request using Basic Auth', async () => {
+  test('Example API POST request using Basic Auth', { tag: ['@apiPostmanPost'] }, async () => {
     test.skip(env.CI?.toLowerCase() === 'true', 'Skip this test in CICD pipeline for lack of required secrets');
 
     const postmanApi = new PostmanApi();

@@ -1,6 +1,5 @@
 import { BaseApi } from './base_api';
-import * as playwright from 'playwright';
-import { APIResponse } from "@playwright/test";
+import { request, APIResponse, APIRequestContext } from "@playwright/test";
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
@@ -28,7 +27,7 @@ export class PostmanApi extends BaseApi {
    */
   async getBasicAuth(): Promise<{ authenticated: boolean }> {
     // Create API context
-    const apiContext = await playwright.request.newContext(this.options);
+    const apiContext: APIRequestContext = await request.newContext(this.options);
     // Send GET request to Postman API /basic-auth
     const response: APIResponse = await apiContext.get('basic-auth');
     // Verify request success
@@ -47,7 +46,7 @@ export class PostmanApi extends BaseApi {
    */
   async postExample(requestBody: object): Promise<{ data: object }> {
     // Create API context
-    const apiContext = await playwright.request.newContext(this.options);
+    const apiContext = await request.newContext(this.options);
     // Send POST request to Postman API /post
     const response: APIResponse = await apiContext.post('post', { data: requestBody });
     // Verify request success
