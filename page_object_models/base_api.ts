@@ -1,7 +1,7 @@
 import { APIResponse, request } from "@playwright/test";
 
 /** Data type for options object to be used with request.newContext() */
-export type ApiOptions = {
+export interface ApiOptions {
   baseURL: string,
   extraHTTPHeaders?: { Authorization: string },
   httpCredentials?: { username: string, password: string }

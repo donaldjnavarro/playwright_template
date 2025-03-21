@@ -5,8 +5,8 @@ config({ path: './.env' });
 import { type ApiOptions } from './base_api';
 
 /** API response data types */
-type PostmanBasicAuthResponse = { authenticated: boolean };
-type PostmanPostExampleResponse = {
+interface PostmanBasicAuthResponse { authenticated: boolean };
+interface PostmanPostExampleResponse {
   args: object,
   data: object,
   files: object,
