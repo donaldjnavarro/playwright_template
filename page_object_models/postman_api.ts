@@ -1,11 +1,42 @@
 import { BaseApi } from './base_api';
-import { request, APIResponse, APIRequestContext } from "@playwright/test";
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
+import { type ApiOptions } from './base_api';
 
+/** API response data types */
+type PostmanBasicAuthResponse = { authenticated: boolean };
+type PostmanPostExampleResponse = {
+  args: object,
+  data: object,
+  files: object,
+  form: object,
+  headers: {
+    host: string,
+    'x-request-start': string,
+    connection: string,
+    'content-length': string,
+    'x-forwarded-proto': string,
+    'x-forwarded-port': string,
+    'x-amzn-trace-id': string,
+    'content-type': string,
+    authorization: string,
+    'user-agent': string,
+    accept: string,
+    'cache-control': string,
+    'postman-token': string,
+    'accept-encoding': string,
+    cookie: string,
+  },
+  json: object,
+  url: string
+};
+
+/**
+ * Class for handling all Postman API requests
+ */
 export class PostmanApi extends BaseApi {
-  readonly options: { baseURL: string, httpCredentials: { username: string, password: string }};
+  readonly options: ApiOptions;
 
   constructor() {
     super();
@@ -25,37 +56,15 @@ export class PostmanApi extends BaseApi {
   /**
    * Send a GET request to the Postman API endpoint designed for verifying basic authentication
    */
-  async getBasicAuth(): Promise<{ authenticated: boolean }> {
-    // Create API context
-    const apiContext: APIRequestContext = await request.newContext(this.options);
-    // Send GET request to Postman API /basic-auth
-    const response: APIResponse = await apiContext.get('basic-auth');
-    // Verify request success
-    this.verifyStatus(response, 200);
-    // Store response body as an object
-    const body = await response.json() as { authenticated: boolean };
-    // Clean up API context
-    await apiContext.dispose();
-    // Return the body object
-    return body;
+  async getBasicAuth(): Promise<PostmanBasicAuthResponse> {
+    return await this.apiRequest('get', 'basic-auth', this.options) as PostmanBasicAuthResponse;
   }
 
   /**
    * Send a POST request to the Postman API endpoint designed for echoing back the request body.
    * @param {object} requestBody - A data object that will be sent as a JSON in the request body
    */
-  async postExample(requestBody: object): Promise<{ data: object }> {
-    // Create API context
-    const apiContext = await request.newContext(this.options);
-    // Send POST request to Postman API /post
-    const response: APIResponse = await apiContext.post('post', { data: requestBody });
-    // Verify request success
-    this.verifyStatus(response, 200);
-    // Store response body as an object
-    const body = await response.json() as { data: object };
-    // Clean up API context
-    await apiContext.dispose();
-    // Return the body object
-    return body;
+  async postExample(requestBody: object): Promise<PostmanPostExampleResponse> {
+    return await this.apiRequest('post', 'post', this.options, { data: requestBody }) as PostmanPostExampleResponse;
   }
 };
