@@ -18,7 +18,7 @@ export class PlaywrightDevPage extends BasePage {
   /**
    * Click the Search button
    */
-  async clickSearchButton () {
+  async clickSearchButton (): Promise<void> {
     try {
       await this.page.locator('//button//*[text() = \'Search\']//ancestor::button')
         .click();
@@ -30,7 +30,7 @@ export class PlaywrightDevPage extends BasePage {
   /**
    * Click the Get Started button
    */
-  async clickGetStarted () {
+  async clickGetStarted (): Promise<void> {
     try {
       await this.page.getByRole('link', { name: 'Get started' }).click();
     } catch (err) {
@@ -41,7 +41,7 @@ export class PlaywrightDevPage extends BasePage {
   /**
    * Type text into the search field
    */
-  async inputSearch (searchText: string) {
+  async inputSearch (searchText: string): Promise<void> {
     try {
       await this.page.locator('//input[@placeholder = \'Search docs\']')
         .fill(searchText);

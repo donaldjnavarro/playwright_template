@@ -1,11 +1,24 @@
 import { BaseApi } from './base_api';
-import { request, APIResponse } from "@playwright/test";
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
+import { type ApiOptions } from './base_api';
+
+/** API response data types */
+type OpenAIModel = {
+  id: string;
+  object: string;
+  created: number;
+  owned_by: string;
+};
+
+type OpenAIGetModelsResponse = {
+  object: string;
+  data: Array<OpenAIModel>;
+};
 
 export class OpenAIApi extends BaseApi {
-  readonly options: { [key: string]: string | { [key: string]: string}};
+  readonly options: ApiOptions;
 
   constructor() {
     super();
@@ -22,20 +35,8 @@ export class OpenAIApi extends BaseApi {
 
   /**
    * Send a GET request to the OpenAI API to retrieve a list of available language models
-   * @returns {Promise<{ data: Array<string> }>}
    */
-  async getModels(): Promise<{ data: Array<string> }> {
-    // Create API context
-    const apiContext = await request.newContext(this.options);
-    // Send GET request
-    const response: APIResponse = await apiContext.get('models');
-    // Verify response status
-    this.verifyStatus(response, 200);
-    // Store response body as object
-    const body = await response.json() as { data: Array<string> };
-    // Clean up API context
-    await apiContext.dispose();
-    // Return body data
-    return body;
+  async getModels(): Promise<OpenAIGetModelsResponse> {
+    return await this.apiRequest('get', 'models', this.options) as OpenAIGetModelsResponse;
   }
 };

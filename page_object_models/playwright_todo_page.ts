@@ -19,7 +19,7 @@ export class PlaywrightTodoPage extends BasePage {
    * Input text into the Todo field
    * @param {string} todoText the text to type into the field
    */
-  async inputTodo (todoText: string) {
+  async inputTodo (todoText: string): Promise<void> {
     try {
       const newTodo = this.page.getByPlaceholder('What needs to be done?');
       await newTodo.fill(todoText);
@@ -29,17 +29,17 @@ export class PlaywrightTodoPage extends BasePage {
     }
   }
 
-  async clickCheckBox (itemString: string) {
+  async clickCheckBox (itemString: string): Promise<void> {
     await this.page.locator(`//label[text() = '${itemString}']/preceding-sibling::input[@type = 'checkbox']`)
       .click();
   }
 
-  async isItemChecked (itemString: string) {
+  async isItemChecked (itemString: string): Promise<boolean> {
     return (await this.page.locator(`//label[text() = '${itemString}']/preceding-sibling::input[@type = 'checkbox']`)
       .isChecked());
   }
 
-  async clickToggleAll () {
+  async clickToggleAll (): Promise<void> {
     await this.page.locator('//input[@id = \'toggle-all\']')
       .click();
   }
