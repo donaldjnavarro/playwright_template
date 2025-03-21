@@ -5,14 +5,14 @@ config({ path: './.env' });
 import { type ApiOptions } from './base_api';
 
 /** API response data types */
-type OpenAIModel = {
+interface OpenAIModel {
   id: string;
   object: string;
   created: number;
   owned_by: string;
 };
 
-type OpenAIGetModelsResponse = {
+interface OpenAIGetModelsResponse {
   object: string;
   data: Array<OpenAIModel>;
 };
