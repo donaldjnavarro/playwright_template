@@ -4,6 +4,12 @@ A basic version of Playwright automated testing to jumpstart new projects.
 
 [toc]
 
+## Setup
+
+1. Run `npm install`
+2. Create **.env** file based on the **.env.template** file
+3. Run `npx playwright install`
+
 ## Framework
 
 ### Linting
@@ -14,11 +20,6 @@ A basic version of Playwright automated testing to jumpstart new projects.
 
 * **.env** file is being used to store environmental variables through the **dotenv** package
 * Some variables will need to be stored in Github Settings > Secrets in order for the Github Actions CI to succeed
-
-## Setup
-
-1. Run `npm install`
-2. Create **.env** file based on the **.env.template** file
 
 ## Usage
 
