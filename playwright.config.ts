@@ -16,14 +16,21 @@ export default defineConfig({
   forbidOnly: !!env.CI,
   /* Retry on CI only */
   retries: env.RETRY ? parseInt(env.RETRY) : 0,
+
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [ ['html', { open: 'never' }], [ env.REPORTER ? env.REPORTER : 'dot'] ],
+  outputDir: 'playwright-report',
+  reporter: [
+    ['html', { open: 'never', outputFolder: 'playwright-report/html' }],
+    [env.REPORTER ? env.REPORTER : 'dot']
+  ],
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
 
     /* See https://playwright.dev/docs/trace-viewer */
     // Do not trace when using the Github reporter, otherwise default to only keep traces for failures.
-    trace: (env.REPORTER === 'github') ? 'off' : 'retain-on-failure',
+    // trace: (env.REPORTER === 'github') ? 'off' : 'retain-on-failure',
+    trace: 'on',
 
     /** Determine if we will run in a headless browser. Defaults to headless */
     headless: (env.HEADLESS?.toLowerCase() !== 'false'),
