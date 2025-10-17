@@ -11,7 +11,7 @@ export class PlaywrightDevPage extends BasePage {
     this.page = page;
     this.url = 'https://playwright.dev';
     this.expected = {
-      title: 'Fast and reliable end-to-end testing for modern web apps | Playwright' + 'ForcedFailure',
+      title: 'Fast and reliable end-to-end testing for modern web apps | Playwright',
     };
   }
 
