@@ -17,7 +17,12 @@ export default defineConfig({
   /* Retry on CI only */
   retries: env.RETRY ? parseInt(env.RETRY) : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [ ['html', { open: 'never' }], [ env.REPORTER ? env.REPORTER : 'dot'] ],
+  outputDir: 'Reports/Playwright/RawResults',
+  reporter: [
+    ['html', { open: 'never', outputFolder: 'Reports/Playwright/HTMLReport' }],
+    [env.REPORTER ? env.REPORTER : 'dot']
+  ],
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
 
