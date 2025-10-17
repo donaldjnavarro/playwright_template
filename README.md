@@ -2,8 +2,6 @@
 
 A basic version of Playwright automated testing to jumpstart new projects.
 
-[toc]
-
 ## Setup
 
 1. Run `npm install`
