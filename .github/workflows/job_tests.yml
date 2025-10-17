@@ -47,5 +47,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: Reports/Playwright/HTMLReport
+        path: playwright-report
         retention-days: 30
