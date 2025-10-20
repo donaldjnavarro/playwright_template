@@ -69,11 +69,11 @@ This will default to 0 if not included in the **.env** file.
 
 After a test is finished running, its results will be saved.
 
-* View the test results by using the command: `npx playwright show-report`
+* View the test results by using the command: `npm run report`
 
 #### Reporter formats
 
-By default tests will always save an HTML report in **./playwright-report/index.html** folder
+By default tests will always save an HTML report in **./output/html-report/index.html** folder
 
 In addition to the HTML report, the commandline will print results according to the following config:
 
