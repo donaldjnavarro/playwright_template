@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "report": "npx playwright show-report playwright-report/html",
+    "report": "npx playwright show-report output/html-report",
     "lint": "npx eslint \"./**/*.{js,mjs,cjs,ts,tsx}\" --config ./eslint.config.ts"
   },
   "repository": {
