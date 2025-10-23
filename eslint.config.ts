@@ -19,7 +19,7 @@ export default [
     },
   },
   {
-    ignores: ["playwright-report/"],
+    ignores: ["output/"],
   },
   {
     rules: {
