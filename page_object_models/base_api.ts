@@ -1,13 +1,27 @@
 import { APIResponse, request } from "@playwright/test";
 
-/** Data type for options object to be used with request.newContext() */
+/**
+ * Configuration options for creating an API context with Playwright.
+ * Corresponds to request.newContext() parameters.
+ */
 export interface ApiOptions {
-  baseURL: string,
-  extraHTTPHeaders?: { Authorization: string },
-  httpCredentials?: { username: string, password: string }
-};
+  /** Base URL for all API requests */
+  baseURL: string;
 
+  /** Optional HTTP headers, commonly used for authorization tokens */
+  extraHTTPHeaders?: { Authorization: string };
+
+  /** Optional basic auth credentials */
+  httpCredentials?: { username: string; password: string };
+}
+
+/**
+ * Base class for API interaction.
+ * Handles HTTP requests, status verification, and context cleanup.
+ * Extend this class to implement endpoint-specific APIs.
+ */
 export class BaseApi {
+  /** API configuration options */
   readonly options: ApiOptions;
 
   constructor() {
@@ -17,18 +31,39 @@ export class BaseApi {
   }
 
   /**
-   * Verify the status code of an API response. Commonly used to verify a successful response with standardized error messaging.
+   * Verify that an API response has the expected HTTP status code.
+   * Throws an error if the status does not match.
+   *
+   * @param response - Playwright APIResponse object from a request
+   * @param expectedStatus - The expected HTTP status code (e.g., 200)
    */
-  verifyStatus (response: APIResponse, expectedStatus: number): void {
+  verifyStatus(response: APIResponse, expectedStatus: number): void {
     if (response.status() !== expectedStatus) {
-      throw new Error(`API did not return the expected status code ${expectedStatus}. Actual status code was ${response.status()}`);
+      throw new Error(
+        `API did not return the expected status code ${expectedStatus}. ` +
+        `Actual status code was ${response.status()}`
+      );
     }
   }
 
   /**
-   * Generic method for calling API requests. Assumes the request should return 200 status code.
+   * Make a generic API request.
+   * Handles HTTP method selection, status verification, and context disposal.
+   * Returns the parsed JSON body typed as T.
+   *
+   * @template T - Type of the expected JSON response body
+   * @param method - HTTP method, e.g., "get" or "post"
+   * @param path - API endpoint path relative to baseURL
+   * @param options - API configuration options
+   * @param data - Optional payload for POST requests
+   * @returns Promise resolving to typed response body
    */
-  async apiRequest (method: string, path: string, options: ApiOptions, data: object = {}): Promise<object> {
+  async apiRequest<T = object>(
+    method: string,
+    path: string,
+    options: ApiOptions,
+    data: object = {}
+  ): Promise<T> {
     const apiContext = await request.newContext(options);
 
     let response: APIResponse;
@@ -43,13 +78,15 @@ export class BaseApi {
         throw new Error(`Unhandled apiRequest method: ${method}`);
     }
 
-    // Verify request success
+    // Ensure the response returned the expected status
     this.verifyStatus(response, 200);
-    // Store response body as an object
-    const body = await response.json() as object;
-    // Clean up API context
+
+    // Extract the response body and type it
+    const body = (await response.json()) as T;
+
+    // Dispose of the API context to free resources
     await apiContext.dispose();
-    // Return the body object
+
     return body;
   }
 }
