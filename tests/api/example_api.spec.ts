@@ -1,6 +1,6 @@
 import { test, expect } from '@hooks';
-import { OpenAIApi, OpenAIGetModelsResponse } from '@pom/api/openai_api.ts';
-import { PostmanApi, PostmanBasicAuthResponse, PostmanPostResponse } from '@pom/api/postman_api.ts';
+import { OpenAIApi, OpenAIGetModelsResponse } from '@pom/api/openai_api';
+import { PostmanApi, PostmanBasicAuthResponse, PostmanPostResponse } from '@pom/api/postman_api';
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: '@env' });
