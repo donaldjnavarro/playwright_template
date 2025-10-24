@@ -1,5 +1,5 @@
-import { test, expect } from '../../hooks.ts';
-import { PlaywrightDevPage } from '../../page_object_models/playwright_dev_page.ts';
+import { test, expect } from '@hooks';
+import { PlaywrightDevPage } from '@pom/ui/playwright_dev_page.ts';
 
 // We can skip tests based on conditions at the file level, or below at the test level
 test.skip(({ isMobile }) => isMobile !== true, 'Test is only for mobile devices');

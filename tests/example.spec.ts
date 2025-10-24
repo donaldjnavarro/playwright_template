@@ -1,7 +1,7 @@
-import { test, expect } from '../hooks.ts';
-import { PlaywrightDevPage } from './../page_object_models/playwright_dev_page';
-import { PlaywrightIntroPage } from './../page_object_models/playwright_intro_page.ts';
-import { PlaywrightTodoPage } from './../page_object_models/playwright_todo_page.ts';
+import { test, expect } from '@hooks';
+import { PlaywrightDevPage } from '@pom/ui/playwright_dev_page';
+import { PlaywrightIntroPage } from '@pom/ui/playwright_intro_page.ts';
+import { PlaywrightTodoPage } from '@pom/ui/playwright_todo_page.ts';
 
 test.describe('Example homepage tests', { tag: ['@playwrightHomePage'] }, () => {
 

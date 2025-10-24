@@ -1,9 +1,9 @@
-import { test, expect } from '../../hooks.ts';
-import { OpenAIApi, OpenAIGetModelsResponse } from '../../page_object_models/openai_api.ts';
-import { PostmanApi, PostmanBasicAuthResponse, PostmanPostResponse } from '../../page_object_models/postman_api.ts';
+import { test, expect } from '@hooks';
+import { OpenAIApi, OpenAIGetModelsResponse } from '@pom/api/openai_api.ts';
+import { PostmanApi, PostmanBasicAuthResponse, PostmanPostResponse } from '@pom/api/postman_api.ts';
 import { config } from 'dotenv';
 import { env } from 'node:process';
-config({ path: './.env' });
+config({ path: '@env' });
 
 test.describe('Example tests using API calls', { tag: ['@apiExamples']}, () => {
 

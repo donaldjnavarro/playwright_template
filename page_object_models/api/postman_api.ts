@@ -1,8 +1,8 @@
-import { BaseApi } from './base_api';
+import { BaseApi } from '@pom/base_api';
 import { config } from 'dotenv';
 import { env } from 'node:process';
-config({ path: './.env' });
-import type { ApiOptions } from './base_api';
+config({ path: '@env' });
+import type { ApiOptions } from '@pom/base_api';
 
 /**
  * Response schema for the Postman "basic-auth" endpoint.

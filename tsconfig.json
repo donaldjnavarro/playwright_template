@@ -7,8 +7,23 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es6", "dom"],
+    "lib": [
+      "es6",
+      "dom"
+    ],
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pom/*": [
+        "./page_object_models/*"
+      ],
+      "@hooks": [
+        "./hooks"
+      ],
+      "@env": [
+        "./.env"
+      ]
+    }
   }
 }
