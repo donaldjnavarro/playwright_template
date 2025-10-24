@@ -2,48 +2,75 @@ import { BaseApi } from './base_api';
 import { config } from 'dotenv';
 import { env } from 'node:process';
 config({ path: './.env' });
-import { type ApiOptions } from './base_api';
-
-/** API response data types */
-interface PostmanBasicAuthResponse { authenticated: boolean };
-interface PostmanPostExampleResponse {
-  args: object,
-  data: object,
-  files: object,
-  form: object,
-  headers: {
-    host: string,
-    'x-request-start': string,
-    connection: string,
-    'content-length': string,
-    'x-forwarded-proto': string,
-    'x-forwarded-port': string,
-    'x-amzn-trace-id': string,
-    'content-type': string,
-    authorization: string,
-    'user-agent': string,
-    accept: string,
-    'cache-control': string,
-    'postman-token': string,
-    'accept-encoding': string,
-    cookie: string,
-  },
-  json: object,
-  url: string
-};
+import type { ApiOptions } from './base_api';
 
 /**
- * Class for handling all Postman API requests
+ * Response schema for the Postman "basic-auth" endpoint.
+ * Indicates whether the request was successfully authenticated.
+ */
+export interface PostmanBasicAuthResponse {
+  /** True if authentication succeeded */
+  authenticated: boolean;
+}
+
+/** Response schema for Postman /get endpoint */
+export interface PostmanGetResponse {
+  args: Record<string, string>;
+  headers: {
+    host: string;
+    'postman-token': string;
+    'accept-encoding': string;
+    'user-agent': string;
+    'x-forwarded-proto': string;
+    authorization: string;
+    accept: string;
+  };
+  url: string;
+}
+
+export interface PostmanPostResponse {
+  args: {
+    [key: string]: string;
+  };
+  data: {
+    [key: string]: unknown; // Dynamic keys depending on request body
+  };
+  files: Record<string, unknown>;
+  form: Record<string, unknown>;
+  headers: {
+    host: string;
+    'postman-token': string;
+    'accept-encoding': string;
+    accept: string;
+    'x-forwarded-proto': string;
+    'user-agent': string;
+    authorization: string;
+    'content-type': string;
+    'content-length': string;
+    cookie: string;
+  };
+  json: Record<string, unknown>; // Mirrors request body
+  url: string;
+}
+
+/**
+ * API wrapper for Postman endpoints.
+ * Extends BaseApi to handle HTTP requests and context management.
+ * Endpoint-specific logic and response typing are defined here.
  */
 export class PostmanApi extends BaseApi {
+  /** API configuration options including baseURL and authentication */
   readonly options: ApiOptions;
 
   constructor() {
     super();
-    // Postman API uses Basic Auth for authentication
+
+    // Ensure Basic Auth credentials are available in environment variables
     if (!env.POSTMAN_API_USERNAME || !env.POSTMAN_API_PASSWORD) {
       throw new Error(`Auth needed for Postman API is missing. Expected it stored in .env as "POSTMAN_API_USERNAME=" and "POSTMAN_API_PASSWORD="`);
     }
+
+    // Configure the API context for Postman with base URL and credentials
     this.options = {
       baseURL: 'https://postman-echo.com/',
       httpCredentials: {
@@ -51,20 +78,24 @@ export class PostmanApi extends BaseApi {
         password: env.POSTMAN_API_PASSWORD
       }
     };
-  };
-
-  /**
-   * Send a GET request to the Postman API endpoint designed for verifying basic authentication
-   */
-  async getBasicAuth(): Promise<PostmanBasicAuthResponse> {
-    return await this.apiRequest('get', 'basic-auth', this.options) as PostmanBasicAuthResponse;
   }
 
   /**
-   * Send a POST request to the Postman API endpoint designed for echoing back the request body.
-   * @param {object} requestBody - A data object that will be sent as a JSON in the request body
+   * Verify Basic Authentication against the Postman API.
+   * Uses GET request to /basic-auth endpoint.
+   * @returns Promise resolving to a typed response indicating authentication success
    */
-  async postExample(requestBody: object): Promise<PostmanPostExampleResponse> {
-    return await this.apiRequest('post', 'post', this.options, { data: requestBody }) as PostmanPostExampleResponse;
+  async getBasicAuth(): Promise<PostmanBasicAuthResponse> {
+    return await this.apiRequest<PostmanBasicAuthResponse>('get', 'basic-auth', this.options);
+  }
+
+  /**
+   * Echo a POST request to the Postman API.
+   * Uses POST request to /post endpoint and returns the full response structure.
+   * @param requestBody Object to send as request payload
+   * @returns Promise resolving to a typed response reflecting request details
+   */
+  async postExample(requestBody: object): Promise<PostmanPostResponse> {
+    return await this.apiRequest<PostmanPostResponse>('post', 'post', this.options, { data: requestBody });
   }
 };
