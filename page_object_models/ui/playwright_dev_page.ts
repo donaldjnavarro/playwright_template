@@ -1,5 +1,5 @@
 import { type Page } from '@playwright/test';
-import { BasePage } from './base_page';
+import { BasePage } from '@pom/base_page';
 
 export class PlaywrightDevPage extends BasePage {
   readonly page: Page;
